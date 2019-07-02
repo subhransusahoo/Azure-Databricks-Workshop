@@ -6,8 +6,16 @@ Assumption:
 * You have access to Azure SQL Data Warehouse
 * Master key has been setup for Azure SQL Data Warehouse. If not then using Admin account run first statement to get a unique string that can be used as encryption key in the next statement
 ```SQL
-select LEFT(REPLACE(CAST(NEWID () AS NVARCHAR(MAX)), '-', '#'), 30) AS ENCKEY;
-CREATE MASTER KEY ENCRYPTION BY PASSWORD = '<result-of-above>'; 
+--
+--generate a random string to be used as enc key while creating master key
+--
+declare @enckey as varchar(30)
+set @enckey=LEFT(REPLACE(CAST(NEWID () AS NVARCHAR(MAX)), '-', '#'), 30)
+select @enckey;
+
+--
+CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'result-from-above';
+--
 ```
 * You have access to Azure Blob Storage
 
